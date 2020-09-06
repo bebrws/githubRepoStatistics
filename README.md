@@ -25,8 +25,6 @@ To use:
 
 
 ```
-git clone git@github.com:bebrws/githubRepoStatistics.git
-cd githubRepoStatistics
-npm install -g
+npm install -g githubRepoStatistics
 grst
 ```
