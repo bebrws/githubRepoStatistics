@@ -20,3 +20,13 @@ and
 or just answer the prompts.
 
 ![An image of the output of grst](https://bradbarrows.com/static/reposSorted.png)
+
+To use:
+
+
+```
+git clone git@github.com:bebrws/githubRepoStatistics.git
+cd githubRepoStatistics
+npm install -g
+grst
+```
