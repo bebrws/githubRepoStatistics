@@ -18,3 +18,5 @@ In order to use this either set the environment variables
 and
 ```GITHUB_TOKEN```
 or just answer the prompts.
+
+![An image of the output of grst](http://bradbarrows.com/static/reposSorted.png)
