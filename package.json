@@ -4,16 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "grst": "node index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@octokit/rest": "^18.0.5",
+    "chalk": "^4.1.0",
     "inquirer": "^7.3.3"
-  },
-  "scripts": {
-    "grst": "node index.js"
   },
   "bin": {
     "grst": "index.js"

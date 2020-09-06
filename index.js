@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 var inquirer = require('inquirer');
-const util = require('util');
+var chalk = require('chalk');
 const { Octokit } = require("@octokit/rest");
 
 async function promptForUsername() {
@@ -46,8 +46,6 @@ async function main() {
     const token = process.env.GITHUB_TOKEN || await promptForToken();
     const octokit = new Octokit({ auth: `token ${token}` });
 
-    // const { data: userData } = await octokit.request("/user");
-
     var { data: repos } = await octokit.repos.listForUser({ username: githubOwner });
 
     const getRepoTrafficDataFor = async (repos, urlEnding) => {
@@ -56,7 +54,7 @@ async function main() {
             return octokit.request(`GET /repos/${githubOwner}/${r.name}/traffic/${urlEnding}`)
             } catch(e) {
                 return new Promise((resolve, reject) => {
-                    resolve({ failed: true })
+                    resolve({ failed: true, data: { count: 0 } })
                 }) 
             }
         })
@@ -72,33 +70,37 @@ async function main() {
     const views = await getRepoTrafficDataFor(repos, 'views')
 
     repos = repos.map((r, index) => {
-        console.log(`\n\nRepo: ${r.name}:`);
-        console.log("Clones:", clones[index]);
-        console.log("Referrers:", referrers[index]);
-        console.log("Paths:", paths[index]);
-        console.log("Views:", views[index]);
+        console.log(chalk.yellow(`\n\nRepo: ${r.name}:`));
+        console.log(chalk.blue("Clones:"), clones[index]);
+        console.log(chalk.blue("Referrers:"), referrers[index]);
+        console.log(chalk.blue("Paths:"), paths[index]);
+        console.log(chalk.blue("Views:"), views[index]);
 
         r.totalClones = clones[index].count;
         r.totalViews = views[index].count;    
         return r;    
     })
 
+    const printLineIndented = (rl) => { console.log(`  ${rl}`); };
+
     repos.sort((a, b) => {
         if (a.totalClones > b.totalClones) return -1;
         if (a.totalClones < b.totalClones) return 1;
         return 0;
     });
-    const reposByCloneCount = repos.map((r) => `${r.name} - ${r.totalClones}`);
-    console.log("\n\n\nRepos sorted by total clone count: ", reposByCloneCount);
-
+    const formatColoredLine = (r, c) => `${chalk.blue(r)} - ${chalk.green(c)}`
+    const reposByCloneCount = repos.map((r) => formatColoredLine(r.name, r.totalClones));
+    console.log(chalk.yellow("\n\n\nRepos sorted by total clone count: "));
+    reposByCloneCount.forEach((rl) => printLineIndented(rl))
 
     repos.sort((a, b) => {
         if (a.totalViews > b.totalViews) return -1;
         if (a.totalViews < b.totalViews) return 1;
         return 0;
     });
-    const reposByViewCount = repos.map((r) => `${r.name} - ${r.totalViews}`);
-    console.log("\n\n\nRepos sorted by total view count: ", reposByViewCount);    
+    const reposByViewCount = repos.map((r) => formatColoredLine(r.name, r.totalViews));
+    console.log(chalk.yellow("\n\n\nRepos sorted by total view count: "));    
+    reposByViewCount.forEach((rl) => printLineIndented(rl))
 }
 
 
