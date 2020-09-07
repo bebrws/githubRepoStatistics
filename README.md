@@ -1,7 +1,13 @@
 # Github Repo Statistics
+A small command line script to display Github Traffic Statistics. Sorts and displays information by Clone and View count as well.
+
+## Background
 
 I wanted a VERY simple way to view Github statistics for all my public repos and couldn't find a tool to do this.
 Especially nothing lightweight and without a bunch of dependencies I didn't want to install.
+
+
+## Usage
 
 This command line tool: 
 ```grst```
