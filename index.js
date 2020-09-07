@@ -46,7 +46,7 @@ async function main() {
     const token = process.env.GITHUB_TOKEN || await promptForToken();
     const octokit = new Octokit({ auth: `token ${token}` });
 
-    var { data: repos } = await octokit.repos.listForUser({ username: githubOwner });
+    var { data: repos } = await octokit.repos.listForUser({ username: githubOwner, headers: { 'If-None-Match': '' } });
 
     const getRepoTrafficDataFor = async (repos, urlEnding) => {
         var promisesForAllRepos = repos.map((r) => {
